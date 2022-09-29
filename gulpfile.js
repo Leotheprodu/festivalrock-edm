@@ -19,6 +19,19 @@ function css(done) {
 
     done();
 }
+function javascript(done) {
+    src('src/js/**/*.js')
+        .pipe(dest('build/js'))
+    done()
+}
+
+function dev(done){
+    watch('src/scss/**/*.scss',css)
+    watch('src/js/**/*.js',javascript)
+
+    done()
+}
+
 function imagenes(done) {
     const opciones = {
         optimizationLevel: 3
@@ -53,16 +66,13 @@ function versionAvif(done) {
     done()
 }
 
-function dev(done){
-    watch('src/scss/**/*.scss',css)
 
-    done()
-}
 
 exports.css = css;
+exports.js = javascript
 exports.imagenes = imagenes;
 exports.versionWebp = versionWebp;
 exports.versionAvif = versionAvif;
-exports.dev = parallel(imagenes, versionWebp, versionAvif, dev);
+exports.dev = parallel(imagenes, versionWebp, versionAvif, javascript, dev);
 
 
